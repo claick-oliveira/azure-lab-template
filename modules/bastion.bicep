@@ -38,6 +38,7 @@ resource bastionHost 'Microsoft.Network/bastionHosts@2022-01-01' = {
   ]
   properties: {
     enableTunneling: true
+    enableIpConnect: true
     ipConfigurations: [
       {
         name: 'IpConf'
