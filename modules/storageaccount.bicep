@@ -48,6 +48,9 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   properties: {
     accessTier: storageAccountTier
   }
+  tags: {
+    environment: 'lab'
+  }
 }
 
 // Output the storage account

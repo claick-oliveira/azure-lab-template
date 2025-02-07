@@ -31,7 +31,7 @@ module hubNetwork 'modules/vnet.bicep' = {
     hubNetworkName: 'hubNetwork'
     location: location
     hubNetworkSpacePrefix: '10.0.0.0/16'
-    subnet1Name: 'bastion-subnet'
+    subnet1Name: 'AzureBastionSubnet'
     subnet1Prefix: '10.0.10.0/24'
     subnet2Name: 'firewall-subnet'
     subnet2Prefix: '10.0.20.0/24'
@@ -90,5 +90,35 @@ module storageAccount 'modules/storageaccount.bicep' = if (deployStorageAccount)
     storageAccountSKU: 'Standard_LRS'
     storageAccountKind: 'StorageV2'
     storageAccountTier: 'Hot'
+  }
+}
+
+@allowed([
+  true
+  false
+])
+@sys.description('Deploy the bastion host, true or false')
+param deployBastionHost bool
+
+// Create the public IP for the bastion host
+module publicIp 'modules/publicip.bicep' = if (deployBastionHost) {
+  name: 'bastionPublicIp'
+  scope: resourceGroup(resourceGroupLab.name)
+  params: {
+    publicIpName: 'bastionPublicIp'
+    location: location
+    publicIpMethod: 'Static'
+  }
+}
+
+module bastionHost 'modules/bastion.bicep' = if (deployBastionHost) {
+  name: 'bastionHost'
+  scope: resourceGroup(resourceGroupLab.name)
+  params: {
+    bastionHostName: 'labBastion'
+    publicIpId: publicIp.outputs.publicIPAddressId
+    location: location
+    vNetname: hubNetwork.outputs.vNetworkName
+    subnetId: hubNetwork.outputs.subnet1Id
   }
 }
