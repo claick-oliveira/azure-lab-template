@@ -2,3 +2,4 @@ using './main.bicep'
 
 param location = <<CHANGE IT>>
 param deployStorageAccount = <<CHANGE IT>>
+param deployBastionHost = <<CHANGE IT>>
