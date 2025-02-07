@@ -72,3 +72,23 @@ module spokeToHubPeering 'modules/peering.bicep' = {
     vNetDestinationId: hubNetwork.outputs.vNetworkID
   }
 }
+
+@allowed([
+  true
+  false
+])
+@sys.description('Deploy the storage account, true or false')
+param deployStorageAccount bool
+
+// Create the storage account
+module storageAccount 'modules/storageaccount.bicep' = if (deployStorageAccount) {
+  name: 'storageAccount'
+  scope: resourceGroup(resourceGroupLab.name)
+  params: {
+    storageAccountName: 'labsa${uniqueString(resourceGroupLab.outputs.resourceGroupID)}'
+    location: location
+    storageAccountSKU: 'Standard_LRS'
+    storageAccountKind: 'StorageV2'
+    storageAccountTier: 'Hot'
+  }
+}
