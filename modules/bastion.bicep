@@ -30,11 +30,14 @@ resource existingVirtualNetwork 'Microsoft.Network/virtualNetworks@2022-09-01' e
 resource bastionHost 'Microsoft.Network/bastionHosts@2022-01-01' = {
   name: bastionHostName
   location: location
+  sku: {
+    name: 'Standard'
+  }
   dependsOn: [
     existingVirtualNetwork
   ]
-
   properties: {
+    enableTunneling: true
     ipConfigurations: [
       {
         name: 'IpConf'
