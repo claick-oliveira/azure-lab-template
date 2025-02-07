@@ -8,7 +8,23 @@ This project was built to create resources in Azure for labs. This template help
 
 ### Installation
 
+```bash
+az extension add -n ssh
+```
+
 ## Usage
+
+```bash
+az deployment sub create --name myLabTemplate --template-file main.bicep --location centralus --parameters main.bicepparam
+```
+
+## Clean
+
+```bash
+az group delete --name myLab
+az deployment sub delete --name myLab
+az deployment sub delete --name myLabTemplate
+```
 
 ## Roadmap
 
