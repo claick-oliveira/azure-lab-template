@@ -1,6 +1,7 @@
 targetScope='subscription'
 
-var resourceGroupName = 'myLab'
+@sys.description('Resource group name')
+param resourceGroupName string
 
 @allowed([
   'eastus'
